@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Fragments.StartScreenFragment">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_gravity="center"
+                android:id="@+id/lottieAnimationView"
+                android:layout_width="@dimen/_200sdp"
+
+                android:layout_height="@dimen/_200sdp"
+                app:lottie_rawRes="@raw/brain_scope"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"/>
+
+
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8sdp"
+                android:backgroundTint="@color/teal_700"
+                android:fontFamily="@font/poppins_medium"
+                android:padding="@dimen/_4sdp"
+                android:text="Start"
+                android:textSize="@dimen/_14ssp" />
+
+            <Button
+                android:id="@+id/btn_htp"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:padding="@dimen/_4sdp"
+                android:text="How to play"
+                android:textSize="@dimen/_14ssp" />
+
+
+        </LinearLayout>
+
+<!--        <com.google.android.gms.ads.AdView-->
+<!--            android:id="@+id/adView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            ads:adSize="BANNER"-->
+<!--            ads:adUnitId="ca-app-pub-8944787818061216/7760687320" />-->
+
+
+    </RelativeLayout>
+
+</layout>
