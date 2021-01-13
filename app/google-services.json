@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "773152781731",
+    "project_id": "guessit-310c3",
+    "storage_bucket": "guessit-310c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773152781731:android:d677550d7eea7f3b9f5616",
+        "android_client_info": {
+          "package_name": "com.marfarijj.guessit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773152781731-pooenqe7k16vg85s950o545olrvmpkmc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.marfarijj.guessit",
+            "certificate_hash": "9f3c68cf0ed2752533be8b834607b80e536730e3"
+          }
+        },
+        {
+          "client_id": "773152781731-vpccggogv3ks17gleltgoijh1coc1uu0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbPg0QyYIODqn1i7BYcQR_1ZmgQdWMLc0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773152781731-vpccggogv3ks17gleltgoijh1coc1uu0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

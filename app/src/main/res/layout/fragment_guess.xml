@@ -1,14 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Fragments.GuessFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/black"
+        tools:context=".Fragments.GuessFragment">
 
-</FrameLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_margin="@dimen/_16sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_wrong_guess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_24ssp"
+            android:textColor="@color/design_default_color_primary"
+            android:text="Wrong"/>
+
+
+        <TextView
+            android:textColor="@color/design_default_color_primary"
+android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_20ssp"
+            android:text="2"/>
+    </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/_16sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_correct_guess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_24ssp"
+                android:textColor="@color/teal_200"
+
+                android:text="Right"/>
+
+
+            <TextView
+                android:textColor="@color/teal_200"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_20ssp"
+                android:text="8"/>
+        </LinearLayout>
+
+
+        <douglasspgyn.com.github.circularcountdown.CircularCountdown
+            android:id="@+id/circularCountdown"
+            android:layout_width="@dimen/_88sdp"
+            android:layout_height="@dimen/_88sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/iv_image_data"
+            android:layout_margin="@dimen/_16sdp"
+            app:countdownTextColor="@color/white"
+            app:countdownBackgroundColor="@color/teal_700"
+            app:countdownTextSize="24sp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_250sdp"
+            android:layout_centerInParent="true"
+            android:id="@+id/iv_image_data"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/tv_guess_data"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/_36ssp"
+            android:textColor="@color/white"
+            android:text="BIRYANI KHANE CHALOGY"/>
+
+        <Button
+            android:id="@+id/btn_wrong"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/adView"
+            android:layout_margin="@dimen/_16sdp"
+            android:fontFamily="@font/poppins_medium"
+
+            android:text="Wrong"
+            android:textSize="@dimen/_12ssp" />
+
+        <Button
+            android:id="@+id/btn_correct"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/adView"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/_16sdp"
+            android:backgroundTint="@color/teal_700"
+            android:fontFamily="@font/poppins_medium"
+
+            android:text="Right"
+            android:textSize="@dimen/_12ssp" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+
+
+    </RelativeLayout>
+</layout>

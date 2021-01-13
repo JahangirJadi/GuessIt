@@ -12,9 +12,7 @@ import com.marfarijj.guessit.R
 
 class SplashFragment : Fragment() {
 
-
     lateinit var navController: NavController
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
