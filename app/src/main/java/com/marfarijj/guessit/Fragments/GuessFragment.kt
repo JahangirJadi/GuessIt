@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.airbnb.lottie.model.content.CircleShape
 import com.labters.lottiealertdialoglibrary.ClickListener
 import com.labters.lottiealertdialoglibrary.DialogTypes
@@ -24,6 +27,8 @@ import douglasspgyn.com.github.circularcountdown.listener.CircularListener
 
 class GuessFragment : Fragment() {
 
+    lateinit var navController: NavController
+    private var isSecondPlayerPlaying: Boolean = false
     private var iteration: Int = 0
     private var player1Score: Int = 0
     private var player2Score: Int = 0
@@ -40,20 +45,110 @@ class GuessFragment : Fragment() {
 
         player = MediaPlayer.create(context, R.raw.alarm)
 
-        binding.btnCorrect.setOnClickListener {
+
+
+        binding.btnWrong.setOnClickListener {
+
 
             if (iteration <= 10) {
-                resetUrduList()
+                iteration++
+                if (player.isPlaying) {
+                    player.stop()
+                }
+
+                if (iteration < 10) {
+                    resetUrduList()
+                } else {
+                    stopCounter()
+                }
                 commonWordList.add(urduWordList[0])
-                player1Score++
+            }
+            if (iteration == 10 && isSecondPlayerPlaying) {
+
+                if (player1Score > player2Score) {
+                    if(player1Score==player2Score){
+                        val action = GuessFragmentDirections.actionNavToResult().setWinner("It's a Tie")
+                        navController.navigate(action)
+                    }
+
+                    if (player1Score > player2Score) {
+                        val action = GuessFragmentDirections.actionNavToResult().setWinner("Player1 Won")
+                        navController.navigate(action)
+                    } else {
+
+                        val action = GuessFragmentDirections.actionNavToResult().setWinner("Player2 Won")
+                        navController.navigate(action)
+                    }
+
+            }
+            if (iteration == 10 && !isSecondPlayerPlaying) {
+                isSecondPlayerPlaying = true
+                guessGameStart("Player 2", isSecondPlayerPlaying, true)
             }
         }
-        guessGameStart("Player 1")
+
+        binding.btnCorrect.setOnClickListener {
+
+
+            if (iteration <= 10) {
+
+                iteration++
+                if (player.isPlaying) {
+                    player.stop()
+                }
+                if (iteration < 10) {
+                    resetUrduList()
+                } else {
+                    stopCounter()
+                }
+
+                commonWordList.add(urduWordList[0])
+
+                if (isSecondPlayerPlaying) {
+                    player2Score++
+                } else {
+                    player1Score++
+                }
+
+
+            }
+
+            if (iteration == 10 && isSecondPlayerPlaying) {
+                if(player1Score==player2Score){
+                    val action = GuessFragmentDirections.actionNavToResult().setWinner("It's a Tie")
+                    navController.navigate(action)
+                }
+
+                if (player1Score > player2Score) {
+                    val action = GuessFragmentDirections.actionNavToResult().setWinner("Player1 Won")
+                    navController.navigate(action)
+                } else {
+
+                    val action = GuessFragmentDirections.actionNavToResult().setWinner("Player2 Won")
+                    navController.navigate(action)
+                }
+            }
+
+            if (iteration == 10 && !isSecondPlayerPlaying) {
+                isSecondPlayerPlaying = true
+                guessGameStart("Player 2", isSecondPlayerPlaying, true)
+            }
+
+
+        }
+        guessGameStart("Player 1", isSecond = false, isUrdu = true)
+
         return binding.root
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
+    }
+
     private fun playSound() {
+        player = MediaPlayer.create(context, R.raw.alarm)
         if (view?.isShown!!) {
             player.start()
             val r2 = Runnable {
@@ -64,6 +159,12 @@ class GuessFragment : Fragment() {
 
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        print("Player 1 score:$player1Score")
+    }
+
 
     override fun onPause() {
         super.onPause()
@@ -138,7 +239,8 @@ class GuessFragment : Fragment() {
             "Apna Time Ayega",
             "Lungi Dance",
             "Gutter",
-            "Palak Paneer"
+            "Palak Paneer",
+            "Moti Choor"
         )
         urduWordList.shuffle()
 
@@ -155,8 +257,6 @@ class GuessFragment : Fragment() {
         } else {
             binding.tvGuessData.text = urduWordList[0]
         }
-
-        iteration++
         startCounter()
     }
 
@@ -164,7 +264,7 @@ class GuessFragment : Fragment() {
         binding.circularCountdown.stop()
     }
 
-    private fun guessGameStart(name: String) {
+    private fun guessGameStart(name: String, isSecond: Boolean, isUrdu: Boolean) {
         lateinit var alertDialog: LottieAlertDialog
         alertDialog = LottieAlertDialog.Builder(context, DialogTypes.TYPE_SUCCESS)
             .setTitle("$name's turn")
@@ -175,6 +275,10 @@ class GuessFragment : Fragment() {
             .setPositiveListener(object : ClickListener {
                 override fun onClick(dialog: LottieAlertDialog) {
 
+                    if (isSecond) {
+                        urduWordList.clear()
+                        iteration = 0
+                    }
                     resetUrduList()
                     dialog.dismiss()
 

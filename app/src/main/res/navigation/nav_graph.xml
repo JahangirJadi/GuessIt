@@ -9,19 +9,18 @@
         android:id="@+id/splashFragment"
         android:name="com.marfarijj.guessit.Fragments.SplashFragment"
         android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" >
+        tools:layout="@layout/fragment_splash">
 
-        <action android:id="@+id/action_nav_to_home"
-            app:popUpTo="@+id/splashFragment"
-
-            app:popUpToInclusive="true"
+        <action
+            android:id="@+id/action_nav_to_home"
             app:destination="@+id/startScreenFragment"
-            app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right"
+
             app:enterAnim="@anim/enter_from_right"
             app:exitAnim="@anim/exit_to_left"
-            />
-
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
+            app:popUpTo="@+id/splashFragment"
+            app:popUpToInclusive="true" />
 
 
     </fragment>
@@ -37,5 +36,34 @@
     <fragment
         android:id="@+id/guessFragment"
         android:name="com.marfarijj.guessit.Fragments.GuessFragment"
-        android:label="GuessFragment" />
+        android:label="GuessFragment">
+        <action
+            android:id="@+id/action_nav_to_result"
+            app:destination="@+id/resultFragment"
+
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
+            app:popUpTo="@+id/guessFragment"
+            app:popUpToInclusive="true">
+
+
+        </action>
+
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.marfarijj.guessit.Fragments.ResultFragment"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result">
+
+
+        <argument
+            android:name="winner"
+            app:argType="string"
+android:defaultValue="TIE"
+            />
+
+    </fragment>
 </navigation>

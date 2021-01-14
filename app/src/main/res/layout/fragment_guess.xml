@@ -70,11 +70,11 @@ android:layout_gravity="center"
 
         <douglasspgyn.com.github.circularcountdown.CircularCountdown
             android:id="@+id/circularCountdown"
-            android:layout_width="@dimen/_88sdp"
-            android:layout_height="@dimen/_88sdp"
+            android:layout_width="@dimen/_108sdp"
+            android:layout_height="@dimen/_108sdp"
             android:layout_centerHorizontal="true"
-            android:layout_above="@+id/iv_image_data"
             android:layout_margin="@dimen/_16sdp"
+            android:layout_alignParentTop="true"
             app:countdownTextColor="@color/white"
             app:countdownBackgroundColor="@color/teal_700"
             app:countdownTextSize="24sp" />
@@ -87,6 +87,7 @@ android:layout_gravity="center"
             android:scaleType="fitXY"/>
 
         <TextView
+            android:layout_margin="@dimen/_16sdp"
             android:id="@+id/tv_guess_data"
             android:gravity="center"
             android:layout_width="wrap_content"
@@ -94,7 +95,7 @@ android:layout_gravity="center"
             android:layout_centerInParent="true"
             android:textSize="@dimen/_36ssp"
             android:textColor="@color/white"
-            android:text="BIRYANI KHANE CHALOGY"/>
+           />
 
         <Button
             android:id="@+id/btn_wrong"
