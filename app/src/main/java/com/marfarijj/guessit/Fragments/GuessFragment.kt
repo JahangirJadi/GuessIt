@@ -1,31 +1,32 @@
 package com.marfarijj.guessit.Fragments
 
+import android.content.Context
 import android.graphics.Color
-import android.graphics.PorterDuff
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.annotation.NonNull
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.airbnb.lottie.model.content.CircleShape
 import com.labters.lottiealertdialoglibrary.ClickListener
 import com.labters.lottiealertdialoglibrary.DialogTypes
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog
+import com.marfarijj.guessit.MainActivity
 import com.marfarijj.guessit.R
 import com.marfarijj.guessit.databinding.FragmentGuessBinding
-import douglasspgyn.com.github.circularcountdown.CircularCascadeCountdown
 import douglasspgyn.com.github.circularcountdown.CircularCountdown
-import douglasspgyn.com.github.circularcountdown.listener.CascadeListener
 import douglasspgyn.com.github.circularcountdown.listener.CircularListener
 
 
 class GuessFragment : Fragment() {
+
+
 
     lateinit var navController: NavController
     private var isSecondPlayerPlaying: Boolean = false
@@ -44,7 +45,6 @@ class GuessFragment : Fragment() {
         binding = FragmentGuessBinding.inflate(inflater, container, false)
 
         player = MediaPlayer.create(context, R.raw.alarm)
-
 
 
         binding.btnWrong.setOnClickListener {
@@ -74,12 +74,12 @@ class GuessFragment : Fragment() {
 
                     if (player1Score > player2Score) {
                         val action =
-                            GuessFragmentDirections.actionNavToResult().setWinner("Player1 Won")
+                            GuessFragmentDirections.actionNavToResult().setWinner("Player 1 Won")
                         navController.navigate(action)
                     } else {
 
                         val action =
-                            GuessFragmentDirections.actionNavToResult().setWinner("Player2 Won")
+                            GuessFragmentDirections.actionNavToResult().setWinner("Player 2 Won")
                         navController.navigate(action)
                     }
                 }
@@ -123,11 +123,11 @@ class GuessFragment : Fragment() {
                 }
 
                 if (player1Score > player2Score) {
-                    val action = GuessFragmentDirections.actionNavToResult().setWinner("Player1 Won")
+                    val action = GuessFragmentDirections.actionNavToResult().setWinner("Player 1 Won")
                     navController.navigate(action)
                 } else {
 
-                    val action = GuessFragmentDirections.actionNavToResult().setWinner("Player2 Won")
+                    val action = GuessFragmentDirections.actionNavToResult().setWinner("Player 2 Won")
                     navController.navigate(action)
                 }
             }
@@ -190,7 +190,6 @@ class GuessFragment : Fragment() {
             .listener(object : CircularListener {
                 override fun onTick(progress: Int) {
                     if (progress == 10) {
-                        Log.d("ActivityTimer", "onTick: $progress")
                         binding.circularCountdown.stop()
                         playSound()
                     }
@@ -279,10 +278,10 @@ class GuessFragment : Fragment() {
                 override fun onClick(dialog: LottieAlertDialog) {
 
                     if (isSecond) {
-                        urduWordList.clear()
                         iteration = 0
                     }
-                    resetUrduList()
+                    startQuiz()
+
                     dialog.dismiss()
 
                 }
@@ -293,5 +292,58 @@ class GuessFragment : Fragment() {
         alertDialog.show()
 
 
+    }
+
+    private fun exitDialog() {
+        lateinit var alertDialog: LottieAlertDialog
+        alertDialog = LottieAlertDialog.Builder(context, DialogTypes.TYPE_QUESTION)
+            .setTitle("Confirmation")
+            .setDescription("Are you sure you want to quit?")
+            .setPositiveText("Yes")
+            .setNegativeText("No")
+
+            .setPositiveButtonColor(Color.parseColor("#069509"))
+            .setNegativeButtonColor(Color.parseColor("#FF03DAC5"))
+            .setPositiveTextColor(Color.parseColor("#ffffff"))
+            .setNegativeTextColor(Color.parseColor("#ffffff"))
+            .setPositiveListener(object : ClickListener {
+                override fun onClick(dialog: LottieAlertDialog) {
+
+                    activity?.finish()
+                    dialog.dismiss()
+                }
+            }
+
+            ).setNegativeListener(object: ClickListener {
+                override fun onClick(dialog: LottieAlertDialog) {
+
+                    dialog.dismiss()
+
+                }
+            })
+
+            .build()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+
+
+    }
+    override fun onAttach(@NonNull context: Context) {
+        super.onAttach(context)
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                exitDialog()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+
+    }
+
+
+
+
+    private fun startQuiz() {
+            resetUrduList()
     }
 }

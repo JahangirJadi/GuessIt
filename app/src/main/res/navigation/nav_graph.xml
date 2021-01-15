@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/resultFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/splashFragment"
@@ -28,7 +28,39 @@
         android:id="@+id/startScreenFragment"
         android:name="com.marfarijj.guessit.Fragments.StartScreenFragment"
         android:label="fragment_start_screen"
-        tools:layout="@layout/fragment_start_screen" />
+        tools:layout="@layout/fragment_start_screen" >
+
+        <action
+            android:id="@+id/action_nav_to_guess"
+            app:destination="@+id/guessFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
+            app:popUpTo="@+id/guessFragment"
+            app:popUpToInclusive="true">
+
+
+        </action>
+
+        <action
+            android:id="@+id/action_nav_to_htp"
+            app:destination="@+id/guideFragment"
+
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
+            app:popUpTo="@+id/guessFragment"
+            app:popUpToInclusive="true">
+
+
+        </action>
+
+
+
+
+    </fragment>
     <fragment
         android:id="@+id/populateDataFragment"
         android:name="com.marfarijj.guessit.Fragments.PopulateDataFragment"
@@ -66,4 +98,8 @@ android:defaultValue="TIE"
             />
 
     </fragment>
+    <fragment
+        android:id="@+id/guideFragment"
+        android:name="com.marfarijj.guessit.Fragments.GuideFragment"
+        android:label="GuideFragment" />
 </navigation>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    >
+<RelativeLayout
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.GuideFragment">
+
+  <ScrollView
+      android:layout_alignParentTop="true"
+      android:layout_width="match_parent"
+      android:layout_above="@+id/adView"
+      android:layout_height="wrap_content">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+          <com.airbnb.lottie.LottieAnimationView
+              android:layout_gravity="center"
+              android:id="@+id/lottieAnimationView"
+              android:layout_width="@dimen/_150sdp"
+
+              android:layout_height="@dimen/_150sdp"
+              app:lottie_rawRes="@raw/brain_scope"
+              app:lottie_autoPlay="true"
+              app:lottie_loop="true"/>
+
+          <TextView
+              android:fontFamily="@font/poppins_medium"
+              android:textSize="@dimen/_14ssp"
+              android:textColor="@color/white"
+              android:text="Welcome to the Guess It app.\n\n Before starting please look at the guide below:\n\n
+1. This is a two player game, upon starting user have to select their preferred choice for the quiz.\n\n
+2. There are two categories Hollywood and Bollywood.\n\n
+3. When player1 starts the game then random words will appear on the screen and those words can be dialogues, movie name and etc.\n\n
+4. Player has to explain those words to other player without saying that word or without using gestures.\n\n
+5. There will be a counter and the other player has to guess it before timer runs out.\n\n
+6. If other user guess it on time you can press the Right Button then you will get a point.\n\n
+7. The player with most points will win the game."
+              android:layout_margin="@dimen/_16sdp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"/>
+
+      </LinearLayout>
+
+  </ScrollView>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+
+
+</RelativeLayout>
+</layout>

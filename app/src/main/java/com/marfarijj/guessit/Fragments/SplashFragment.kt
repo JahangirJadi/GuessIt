@@ -40,7 +40,7 @@ class SplashFragment : Fragment() {
             navController.navigate(R.id.action_nav_to_home)
 
         }
-        Handler().postDelayed(r2, 5000)
+        Handler().postDelayed(r2, 6000)
 
 
 
