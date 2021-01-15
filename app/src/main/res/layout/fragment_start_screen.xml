@@ -11,6 +11,17 @@
         android:layout_height="match_parent"
         tools:context=".Fragments.StartScreenFragment">
 
+
+<ImageView
+    android:id="@+id/iv_btn_share"
+    android:layout_alignParentRight="true"
+    android:layout_margin="@dimen/_16sdp"
+    android:layout_width="@dimen/_32sdp"
+    android:layout_height="@dimen/_32sdp"
+    android:src="@drawable/icon_share"
+   />
+
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,7 +70,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+            ads:adUnitId="ca-app-pub-8944787818061216/3622125596" />
 
 
     </RelativeLayout>

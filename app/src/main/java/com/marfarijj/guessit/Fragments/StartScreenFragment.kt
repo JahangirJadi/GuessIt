@@ -1,6 +1,7 @@
 package com.marfarijj.guessit.Fragments
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -22,7 +23,7 @@ import com.labters.lottiealertdialoglibrary.LottieAlertDialog
 import com.marfarijj.guessit.R
 import com.marfarijj.guessit.databinding.FragmentStartScreenBinding
 
-val admobUnitIt = "ca-app-pub-3940256099942544/6300978111"
+private val admobUnitIt = "ca-app-pub-8944787818061216/3622125596"
 
 class StartScreenFragment : Fragment() {
 
@@ -43,6 +44,10 @@ class StartScreenFragment : Fragment() {
             context
         )
         initBannerAd()
+
+        binding.ivBtnShare.setOnClickListener{
+            shareApp()
+        }
 
         binding.btnHtp.setOnClickListener {
             navController.navigate(R.id.action_nav_to_htp)
@@ -78,7 +83,6 @@ class StartScreenFragment : Fragment() {
             .setDescription("Are you sure you want to quit?")
             .setPositiveText("Yes")
             .setNegativeText("No")
-
             .setPositiveButtonColor(Color.parseColor("#069509"))
             .setNegativeButtonColor(Color.parseColor("#FF03DAC5"))
             .setPositiveTextColor(Color.parseColor("#ffffff"))
@@ -119,7 +123,13 @@ class StartScreenFragment : Fragment() {
     }
 
 
-
+private fun shareApp(){
+    val shareIntent = Intent()
+    shareIntent.action = Intent.ACTION_SEND
+    shareIntent.putExtra(Intent.EXTRA_TEXT, "Checkout new app: https://play.google.com/store/apps/details?id=com.marfarijj.guessit")
+    shareIntent.type = "text/plain"
+    startActivity(Intent.createChooser(shareIntent,"send to"))
+}
 
 
 }

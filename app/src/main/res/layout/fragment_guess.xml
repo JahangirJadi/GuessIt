@@ -41,24 +41,31 @@ android:layout_gravity="center"
     </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
+          android:id="@+id/linear_restart"
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/_16sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:src="@drawable/ic_baseline_restore_24"
+                android:tint="@color/white"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"/>
+
             <TextView
-                android:id="@+id/tv_correct_guess"
+                android:id="@+id/tv_restart_game"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_24ssp"
-                android:textColor="@color/teal_200"
-
-                android:text="Right"/>
+                android:textSize="@dimen/_20ssp"
+                android:textColor="@color/white"
+                android:text="Restart"/>
 
 
             <TextView
+                android:visibility="gone"
                 android:textColor="@color/teal_200"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
@@ -66,6 +73,9 @@ android:layout_gravity="center"
                 android:textSize="@dimen/_20ssp"
                 android:text="8"/>
         </LinearLayout>
+
+
+
 
 
         <douglasspgyn.com.github.circularcountdown.CircularCountdown
@@ -128,7 +138,7 @@ android:layout_gravity="center"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+            ads:adUnitId="ca-app-pub-8944787818061216/2225654571" />
 
 
     </RelativeLayout>

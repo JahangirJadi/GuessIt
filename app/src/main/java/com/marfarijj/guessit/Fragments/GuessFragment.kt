@@ -9,23 +9,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.labters.lottiealertdialoglibrary.ClickListener
 import com.labters.lottiealertdialoglibrary.DialogTypes
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog
-import com.marfarijj.guessit.MainActivity
 import com.marfarijj.guessit.R
 import com.marfarijj.guessit.databinding.FragmentGuessBinding
 import douglasspgyn.com.github.circularcountdown.CircularCountdown
 import douglasspgyn.com.github.circularcountdown.listener.CircularListener
 
+private val admobUnitIt = "ca-app-pub-8944787818061216/2225654571"
 
 class GuessFragment : Fragment() {
-
 
 
     lateinit var navController: NavController
@@ -33,6 +35,7 @@ class GuessFragment : Fragment() {
     private var iteration: Int = 0
     private var player1Score: Int = 0
     private var player2Score: Int = 0
+    private var isCurrentCategoryUrdu: Boolean = true
     private lateinit var player: MediaPlayer
     private var commonWordList: MutableList<String> = mutableListOf()
     private lateinit var urduWordList: MutableList<String>
@@ -43,13 +46,12 @@ class GuessFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentGuessBinding.inflate(inflater, container, false)
-
+        initBannerAd()
         player = MediaPlayer.create(context, R.raw.alarm)
 
 
         binding.btnWrong.setOnClickListener {
 
-
             if (iteration <= 10) {
                 iteration++
                 if (player.isPlaying) {
@@ -57,42 +59,42 @@ class GuessFragment : Fragment() {
                 }
 
                 if (iteration < 10) {
-                    resetUrduList()
+                    resetList()
                 } else {
                     stopCounter()
                 }
-                commonWordList.add(urduWordList[0])
+                if (isCurrentCategoryUrdu) {
+                    commonWordList.add(urduWordList[0])
+                } else {
+                    commonWordList.add(englishWordList[0])
+                }
             }
             if (iteration == 10 && isSecondPlayerPlaying) {
 
+                if (player1Score == player2Score) {
+                    val action = GuessFragmentDirections.actionNavToResult().setWinner("It's a Tie")
+                    navController.navigate(action)
+                }
+
                 if (player1Score > player2Score) {
-                    if (player1Score == player2Score) {
-                        val action =
-                            GuessFragmentDirections.actionNavToResult().setWinner("It's a Tie")
-                        navController.navigate(action)
-                    }
-
-                    if (player1Score > player2Score) {
-                        val action =
-                            GuessFragmentDirections.actionNavToResult().setWinner("Player 1 Won")
-                        navController.navigate(action)
-                    } else {
-
-                        val action =
-                            GuessFragmentDirections.actionNavToResult().setWinner("Player 2 Won")
-                        navController.navigate(action)
-                    }
+                    val action =
+                        GuessFragmentDirections.actionNavToResult().setWinner("Player 1 Won")
+                    navController.navigate(action)
+                }
+                if (player1Score < player2Score) {
+                    val action =
+                        GuessFragmentDirections.actionNavToResult().setWinner("Player 2 Won")
+                    navController.navigate(action)
                 }
             }
             if (iteration == 10 && !isSecondPlayerPlaying) {
                 isSecondPlayerPlaying = true
-                guessGameStart("Player 2", isSecondPlayerPlaying, true)
+                guessGameStart("Player 2", isSecondPlayerPlaying, isCurrentCategoryUrdu)
             }
         }
 
         binding.btnCorrect.setOnClickListener {
 
-
             if (iteration <= 10) {
 
                 iteration++
@@ -100,46 +102,61 @@ class GuessFragment : Fragment() {
                     player.stop()
                 }
                 if (iteration < 10) {
-                    resetUrduList()
+                    resetList()
                 } else {
                     stopCounter()
                 }
+                if (isCurrentCategoryUrdu) {
+                    commonWordList.add(urduWordList[0])
+                } else {
+                    commonWordList.add(englishWordList[0])
+                }
 
-                commonWordList.add(urduWordList[0])
 
                 if (isSecondPlayerPlaying) {
                     player2Score++
                 } else {
                     player1Score++
                 }
+                println("Player 1 score $player1Score\n player 2 score $player2Score")
 
 
             }
 
             if (iteration == 10 && isSecondPlayerPlaying) {
-                if(player1Score==player2Score){
+
+                if (player1Score == player2Score) {
                     val action = GuessFragmentDirections.actionNavToResult().setWinner("It's a Tie")
                     navController.navigate(action)
                 }
 
                 if (player1Score > player2Score) {
-                    val action = GuessFragmentDirections.actionNavToResult().setWinner("Player 1 Won")
-                    navController.navigate(action)
-                } else {
-
-                    val action = GuessFragmentDirections.actionNavToResult().setWinner("Player 2 Won")
+                    val action =
+                        GuessFragmentDirections.actionNavToResult().setWinner("Player 1 Won")
                     navController.navigate(action)
                 }
+                if (player1Score < player2Score) {
+                    val action =
+                        GuessFragmentDirections.actionNavToResult().setWinner("Player 2 Won")
+                    navController.navigate(action)
+                }
+
             }
 
             if (iteration == 10 && !isSecondPlayerPlaying) {
                 isSecondPlayerPlaying = true
-                guessGameStart("Player 2", isSecondPlayerPlaying, true)
+                guessGameStart("Player 2", isSecondPlayerPlaying, isCurrentCategoryUrdu)
             }
 
 
         }
-        guessGameStart("Player 1", isSecond = false, isUrdu = true)
+
+        binding.linearRestart.setOnClickListener {
+            restartGame()
+        }
+
+
+        selectCategory()
 
         return binding.root
 
@@ -165,7 +182,7 @@ class GuessFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        print("Player 1 score:$player1Score")
+//        print("Player 1 score:$player1Score")
     }
 
 
@@ -186,10 +203,10 @@ class GuessFragment : Fragment() {
     }
 
     private fun startCounter() {
-        binding.circularCountdown.create(1, 10, CircularCountdown.TYPE_SECOND)
+        binding.circularCountdown.create(1, 15, CircularCountdown.TYPE_SECOND)
             .listener(object : CircularListener {
                 override fun onTick(progress: Int) {
-                    if (progress == 10) {
+                    if (progress == 15) {
                         binding.circularCountdown.stop()
                         playSound()
                     }
@@ -201,7 +218,7 @@ class GuessFragment : Fragment() {
             }).start()
     }
 
-    private fun resetUrduList() {
+    private fun resetList() {
         urduWordList = mutableListOf(
             "Biryani",
             "Chai",
@@ -244,12 +261,63 @@ class GuessFragment : Fragment() {
             "Palak Paneer",
             "Moti Choor"
         )
-        urduWordList.shuffle()
 
-        if (commonWordList != null) {
-            if (commonWordList.size > 0) {
-                if (commonWordList.contains(urduWordList[0])) {
-                    resetUrduList()
+
+        englishWordList = mutableListOf(
+            "Steak",
+            "Tea",
+            "Coffee",
+            "The Expendable",
+            "You can't see me",
+            "What the Rock is cooking",
+            "Stuart Little",
+            "Man hole",
+            "Bald",
+            "Tom Cruise",
+            "Angelina Jolie",
+            "Jackie Chan",
+            "Bruce Lee",
+            "Alexandra Darrario",
+            "Chris Hemsworth",
+            "Robert Downey JR",
+            "Hulk",
+            "Jason Statham",
+            "The Mechanic",
+            "Chimpanzee",
+            "Beyonce",
+            "Laxative",
+            "Sylvester Stallone",
+            "Terminator",
+            "Loose Motion",
+            "Burp",
+            "Fart",
+            "Jason Statham",
+            "Paul Walker",
+            "Super Lazy",
+            "Pokemon",
+            "Tom & Jerry",
+            "No Pain No Gain",
+            "Bond. James Bond",
+            "I'll Be Back",
+            "Hasta la vista, baby",
+            "la-la land",
+            "Batman",
+            "Super man",
+            "Spider Man"
+        )
+
+
+        if (isCurrentCategoryUrdu) {
+            urduWordList.shuffle()
+            urduWordList.shuffle()
+
+            if (commonWordList != null) {
+                if (commonWordList.size > 0) {
+                    if (commonWordList.contains(urduWordList[0])) {
+                        resetList()
+                    } else {
+                        binding.tvGuessData.text = urduWordList[0]
+                    }
                 } else {
                     binding.tvGuessData.text = urduWordList[0]
                 }
@@ -257,8 +325,25 @@ class GuessFragment : Fragment() {
                 binding.tvGuessData.text = urduWordList[0]
             }
         } else {
-            binding.tvGuessData.text = urduWordList[0]
+            englishWordList.shuffle()
+            englishWordList.shuffle()
+
+            if (commonWordList != null) {
+                if (commonWordList.size > 0) {
+                    if (commonWordList.contains(englishWordList[0])) {
+                        resetList()
+                    } else {
+                        binding.tvGuessData.text = englishWordList[0]
+                    }
+                } else {
+                    binding.tvGuessData.text = englishWordList[0]
+                }
+            } else {
+                binding.tvGuessData.text = englishWordList[0]
+            }
         }
+
+
         startCounter()
     }
 
@@ -294,6 +379,43 @@ class GuessFragment : Fragment() {
 
     }
 
+    private fun selectCategory() {
+        lateinit var alertDialog: LottieAlertDialog
+        alertDialog = LottieAlertDialog.Builder(context, DialogTypes.TYPE_LOADING)
+            .setTitle("Select Category")
+            .setDescription("Please select the segment category.")
+            .setPositiveText("Urdu/Hindi")
+            .setNegativeText("English")
+
+            .setPositiveButtonColor(Color.parseColor("#069509"))
+            .setNegativeButtonColor(Color.parseColor("#FF03DAC5"))
+            .setPositiveTextColor(Color.parseColor("#ffffff"))
+            .setNegativeTextColor(Color.parseColor("#ffffff"))
+            .setPositiveListener(object : ClickListener {
+                override fun onClick(dialog: LottieAlertDialog) {
+                    isCurrentCategoryUrdu = true
+                    guessGameStart("Player 1", isSecond = false, isUrdu = isCurrentCategoryUrdu)
+                    dialog.dismiss()
+                }
+            }
+
+            ).setNegativeListener(object : ClickListener {
+                override fun onClick(dialog: LottieAlertDialog) {
+                    isCurrentCategoryUrdu = false
+                    guessGameStart("Player 1", isSecond = false, isUrdu = isCurrentCategoryUrdu)
+                    dialog.dismiss()
+
+                }
+            })
+
+            .build()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+
+
+    }
+
+
     private fun exitDialog() {
         lateinit var alertDialog: LottieAlertDialog
         alertDialog = LottieAlertDialog.Builder(context, DialogTypes.TYPE_QUESTION)
@@ -314,7 +436,7 @@ class GuessFragment : Fragment() {
                 }
             }
 
-            ).setNegativeListener(object: ClickListener {
+            ).setNegativeListener(object : ClickListener {
                 override fun onClick(dialog: LottieAlertDialog) {
 
                     dialog.dismiss()
@@ -328,6 +450,7 @@ class GuessFragment : Fragment() {
 
 
     }
+
     override fun onAttach(@NonNull context: Context) {
         super.onAttach(context)
 
@@ -341,9 +464,33 @@ class GuessFragment : Fragment() {
     }
 
 
-
-
     private fun startQuiz() {
-            resetUrduList()
+        resetList()
+    }
+
+    private fun restartGame() {
+        iteration = 0
+        player2Score = 0
+        player1Score = 0
+        binding.circularCountdown.stop()
+        binding.circularCountdown.setProgress(0)
+        selectCategory()
+
+    }
+
+    private fun initBannerAd() {
+        try {
+            val adView = AdView(context)
+            adView.adSize = AdSize.BANNER
+
+            adView.adUnitId = admobUnitIt
+
+            val adRequest = AdRequest.Builder().build()
+            binding.adView.loadAd(adRequest)
+        } catch (e: Exception) {
+            e.printStackTrace()
+
+        }
+
     }
 }

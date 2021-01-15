@@ -9,25 +9,39 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.NonNull
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.labters.lottiealertdialoglibrary.ClickListener
 import com.labters.lottiealertdialoglibrary.DialogTypes
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog
 import com.marfarijj.guessit.R
 import com.marfarijj.guessit.databinding.FragmentResultBinding
+private val admobUnitIt = "ca-app-pub-8944787818061216/8407919547"
 
 class ResultFragment : Fragment() {
     val args: ResultFragmentArgs by navArgs()
 private lateinit var binding : FragmentResultBinding
+    private lateinit var navController: NavController
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentResultBinding.inflate(inflater,container, false)
-
+        initBannerAd()
         binding.tvWinner.setText(args.winner)
 
+        binding.btnPlayAgain.setOnClickListener {
+navController.navigate(R.id.action_nav_from_result_to_guess)
+        }
+
+        binding.btnQuit.setOnClickListener {
+           exitDialog()
+        }
         return binding.root
     }
     private fun exitDialog() {
@@ -76,6 +90,25 @@ private lateinit var binding : FragmentResultBinding
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
+    }
 
+    private fun initBannerAd() {
+        try {
+            val adView = AdView(context)
+            adView.adSize = AdSize.BANNER
+
+            adView.adUnitId = admobUnitIt
+
+            val adRequest = AdRequest.Builder().build()
+            binding.adView.loadAd(adRequest)
+        } catch (e: Exception) {
+            e.printStackTrace()
+
+        }
+
+    }
 
 }

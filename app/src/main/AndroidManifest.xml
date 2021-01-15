@@ -10,9 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GuessIt">
 
+<!--        ca-app-pub-8944787818061216~3813697287-->
+<!--        ca-app-pub-3940256099942544~3347511713-->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+            android:value="ca-app-pub-8944787818061216~3813697287" />
 
         <activity android:name=".MainActivity"
              android:screenOrientation="portrait">
