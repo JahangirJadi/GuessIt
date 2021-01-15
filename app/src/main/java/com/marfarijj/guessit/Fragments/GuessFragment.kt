@@ -66,20 +66,23 @@ class GuessFragment : Fragment() {
             if (iteration == 10 && isSecondPlayerPlaying) {
 
                 if (player1Score > player2Score) {
-                    if(player1Score==player2Score){
-                        val action = GuessFragmentDirections.actionNavToResult().setWinner("It's a Tie")
+                    if (player1Score == player2Score) {
+                        val action =
+                            GuessFragmentDirections.actionNavToResult().setWinner("It's a Tie")
                         navController.navigate(action)
                     }
 
                     if (player1Score > player2Score) {
-                        val action = GuessFragmentDirections.actionNavToResult().setWinner("Player1 Won")
+                        val action =
+                            GuessFragmentDirections.actionNavToResult().setWinner("Player1 Won")
                         navController.navigate(action)
                     } else {
 
-                        val action = GuessFragmentDirections.actionNavToResult().setWinner("Player2 Won")
+                        val action =
+                            GuessFragmentDirections.actionNavToResult().setWinner("Player2 Won")
                         navController.navigate(action)
                     }
-
+                }
             }
             if (iteration == 10 && !isSecondPlayerPlaying) {
                 isSecondPlayerPlaying = true
